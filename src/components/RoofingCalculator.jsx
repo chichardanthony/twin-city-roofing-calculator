@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
+// Import our component definitions from above
 const RoofingCalculator = () => {
   const [inputs, setInputs] = useState({
     // Project Configuration
@@ -44,6 +45,73 @@ const RoofingCalculator = () => {
     }));
   };
 
+  // Calculate results using the utility functions
+  const results = {
+    baseCalc: {
+      tearOff: inputs.baseSquares * 75,
+      extraLayer: inputs.layers > 1 ? inputs.baseSquares * 20 : 0
+    },
+    heritage: {
+      application: Math.ceil(inputs.baseSquares * (inputs.roofType === 'gable' ? 1.10 : inputs.roofType === 'simpleHip' ? 1.13 : 1.18)) * 300,
+      twoStory: {
+        tearOff: inputs.twoStorySquares * 20,
+        on: Math.ceil(inputs.twoStorySquares * (inputs.roofType === 'gable' ? 1.10 : inputs.roofType === 'simpleHip' ? 1.13 : 1.18)) * 20
+      },
+      steep: {
+        tearOff: inputs.steepSquares * 20,
+        on: Math.ceil(inputs.steepSquares * (inputs.roofType === 'gable' ? 1.10 : inputs.roofType === 'simpleHip' ? 1.13 : 1.18)) * 20
+      },
+      iceAndWater: inputs.isGeringNE ? inputs.iceAndWaterLength * 2 : 0,
+      ridgeVent: inputs.ridgeVentLength * 7,
+      totalNoGutters: 0 // Will be calculated below
+    },
+    legacy: {
+      application: Math.ceil(inputs.baseSquares * (inputs.roofType === 'gable' ? 1.10 : inputs.roofType === 'simpleHip' ? 1.13 : 1.18)) * 385,
+      twoStory: {
+        tearOff: inputs.twoStorySquares * 20,
+        on: Math.ceil(inputs.twoStorySquares * (inputs.roofType === 'gable' ? 1.10 : inputs.roofType === 'simpleHip' ? 1.13 : 1.18)) * 20
+      },
+      steep: {
+        tearOff: inputs.steepSquares * 20,
+        on: Math.ceil(inputs.steepSquares * (inputs.roofType === 'gable' ? 1.10 : inputs.roofType === 'simpleHip' ? 1.13 : 1.18)) * 20
+      },
+      iceAndWater: inputs.isGeringNE ? inputs.iceAndWaterLength * 2 : 0,
+      ridgeVent: inputs.ridgeVentLength * 7,
+      totalNoGutters: 0 // Will be calculated below
+    },
+    guttersAndDownspouts: {
+      gutters: inputs.gutter5Length * 9.75,
+      downspouts: Math.ceil(inputs.downspout2x3Length / 10) * 10 * 9.75,
+      hingeExtensions: inputs.hingeExtensions * 12,
+      total: (inputs.gutter5Length * 9.75) + 
+             (Math.ceil(inputs.downspout2x3Length / 10) * 10 * 9.75) + 
+             (inputs.hingeExtensions * 12)
+    }
+  };
+
+  // Calculate totals
+  results.heritage.totalNoGutters = 
+    results.baseCalc.tearOff + 
+    results.baseCalc.extraLayer + 
+    results.heritage.application +
+    results.heritage.twoStory.tearOff + 
+    results.heritage.twoStory.on +
+    results.heritage.steep.tearOff + 
+    results.heritage.steep.on +
+    results.heritage.iceAndWater + 
+    results.heritage.ridgeVent;
+
+  results.legacy.totalNoGutters = 
+    results.baseCalc.tearOff + 
+    results.baseCalc.extraLayer + 
+    results.legacy.application +
+    results.legacy.twoStory.tearOff + 
+    results.legacy.twoStory.on +
+    results.legacy.steep.tearOff + 
+    results.legacy.steep.on +
+    results.legacy.iceAndWater + 
+    results.legacy.ridgeVent;
+
   return (
     <div className="p-4">
       <Card>
@@ -58,11 +126,7 @@ const RoofingCalculator = () => {
             onGeringToggle={handleGeringToggle}
           />
           <Separator />
-          {/* Additional forms will go here */}
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
-
-export default RoofingCalculator;
+          <AdditionalComponentsForm 
+            inputs={inputs}
+            onInputChange={handleInputChange}
+          />
