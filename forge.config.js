@@ -2,7 +2,7 @@ module.exports = {
   packagerConfig: {
     name: "Twin City Roofing Calculator",
     executableName: "twin-city-roofing-calculator",
-    icon: "./src/assets/icon" // Add your icon path
+    icon: "./assets/icon" // Add your icon path
   },
   makers: [
     {
