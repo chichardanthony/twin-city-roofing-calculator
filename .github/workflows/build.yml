@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ${{ matrix.os }}
@@ -38,5 +41,3 @@ jobs:
           files: |
             out/make/squirrel.windows/x64/*.exe
             out/make/zip/win32/x64/*.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
