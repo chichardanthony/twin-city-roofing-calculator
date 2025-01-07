@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "description": "Roofing estimation calculator for Twin City Roofing",
   "main": "electron/main.js",
-  "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
-  },
+"scripts": {
+  "start": "electron-forge start",
+  "package": "electron-forge package",
+  "make": "electron-forge make",
+  "dev": "vite",
+  "build": "vite build",
+  "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+  "preview": "vite preview",
+  "electron:dev": "concurrently \"npm run dev\" \"electron .\"",
+  "electron:build": "npm run build && electron-builder",
+  "electron:pack": "electron-builder --dir",
+  "electron:make": "electron-builder"
+},
   "author": "Twin City Roofing",
   "license": "MIT",
   "dependencies": {
