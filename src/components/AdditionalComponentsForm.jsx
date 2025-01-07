@@ -1,8 +1,6 @@
 import React from 'react';
-import { 
-  Label, 
-  Input 
-} from "@/components/ui";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const AdditionalComponentsForm = ({ inputs, onInputChange }) => {
   return (
