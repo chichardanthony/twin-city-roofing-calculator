@@ -10,11 +10,7 @@ permissions:
 
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [windows-latest]
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -23,21 +19,24 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
-          
+      
       - name: Install Dependencies
-        run: npm install
+        run: |
+          npm install -g @electron-forge/cli
+          npm install
         
-      - name: Build React
+      - name: Build
         run: npm run build
         
-      - name: Build Electron App
+      - name: Package
+        run: npm run package
+        
+      - name: Make
         run: npm run make
         
       - name: Create Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            out/make/squirrel.windows/x64/*.exe
-            out/make/zip/win32/x64/*.zip
+            out/**/*.exe
+            out/**/*.zip
