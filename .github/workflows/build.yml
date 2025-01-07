@@ -18,6 +18,11 @@ jobs:
         with:
           node-version: 18
       
+      - name: Verify Files
+        run: |
+          dir src\lib
+          dir src\components\ui
+          
       - name: Install Dependencies
         run: |
           npm install -g @electron-forge/cli
