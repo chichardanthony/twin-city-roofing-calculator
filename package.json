@@ -3,6 +3,29 @@
   "version": "1.0.0",
   "description": "Roofing estimation calculator for Twin City Roofing",
   "main": "electron/main.js",
+  "author": {
+    "name": "Twin City Roofing",
+    "email": "support@twincityroofing.com",
+    "url": "https://twincityroofing.com"
+  },
+  "config": {
+    "forge": {
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "TwinCityRoofingCalculator"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        }
+      ]
+    }
+  },
   "scripts": {
     "start": "vite",
     "build": "vite build",
